@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import EmojiWaterfall from './components/EmojiWaterfall.vue'
-// import Barrage from './components/Barrage.vue'
+import Barrage from './components/Barrage.vue'
+import ScrollSeamless from './components/ScrollSeamless.vue'
 
 const msg = ref<string[]>(['今天你EMO了吗'])
 
+const isComponent = ref<'emoji' | 'barrage' | 'scroll'>('scroll')
+
 onMounted(() => {
   document.onkeydown = (event) => {
-    console.log(event)
     const key = event.key
     if (key === 's') {
       const title = prompt('输入你想要title吧？',)
@@ -18,8 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <EmojiWaterfall :msg="msg" />
-  <!-- <Barrage msg="弹幕"/> -->
+  <component :is="{ emoji: EmojiWaterfall, barrage: Barrage, scroll: ScrollSeamless }[isComponent]" :msg="msg" />
 </template>
 
 <style scoped>
