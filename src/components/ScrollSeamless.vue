@@ -1,12 +1,13 @@
 <template>
   <div class="box">
     <div class="box_btnBox">
-      <button class="leftBtn" @click="butClick('direction','left')">向左</button>
-      <button class="rightBtn" @click="butClick('direction','right')">向右</button>
-      <button class="stopBtn" @click="butClick('stop','')">暂停</button>
+      <button class="leftBtn" @click="butClick('direction', 'left')">向左</button>
+      <button class="rightBtn" @click="butClick('direction', 'right')">向右</button>
+      <button class="stopBtn" @click="butClick('stop', '')">暂停</button>
       <button class="addSpeedBtn" @click="butClick('speed', options.speed + 1)">加速</button>
       <button class="subSpeedBtn" @click="butClick('speed', options.speed - 1)">减速</button>
       <button class="restoreBtn" @click="butClick('speed', 5)">速度还原</button>
+      <button class="restoreBtn" @click="burstColor">爆彩</button>
     </div>
     <div class="box_imgBox">
       <div class="imgsBox">
@@ -19,6 +20,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import JSConfetti from 'js-confetti'
 import { onMounted, reactive } from 'vue';
 
 interface OptionsProps {
@@ -34,7 +36,7 @@ defineOptions({
 })
 
 const options = reactive<OptionsProps>({
-  imgWidth: 500,
+  imgWidth: 620,
   speed: 1,
   direction: 'right',
   timer: null,
@@ -44,6 +46,15 @@ const options = reactive<OptionsProps>({
 onMounted(() => {
   init()
 })
+
+const jsConfetti = new JSConfetti()
+
+const burstColor = () => {
+  jsConfetti.addConfetti({
+    emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
+    emojiSize: 20,
+  })
+}
 
 const init = () => {
   options.imgsBox = document.querySelector('.imgsBox')
@@ -57,7 +68,7 @@ const init = () => {
 const addImg = () => {
   if (!options.imgsBox) return
   const firstImg = options.imgsBox.children[0].cloneNode(true)
-  
+
   const lastImg = options.imgsBox.children[options.imgsBox.children.length - 1].cloneNode(true)
   // 将图片插入图片容器最前面和最后面
   options.imgsBox.insertBefore(lastImg, options.imgsBox.children[0])
@@ -102,7 +113,7 @@ const butClick = (type: string, value: string | number) => {
 </script>
 <style scoped lang="scss">
 .box_btnBox {
-  width: 520px;
+  width: 620px;
   height: 50px;
   display: flex;
   justify-content: space-between;
@@ -114,12 +125,12 @@ const butClick = (type: string, value: string | number) => {
 }
 
 .box .imgsBox img {
-  width: 500px;
+  width: 620px;
   height: 280px;
 }
 
 .box_imgBox {
-  width: 500px;
+  width: 620px;
   height: 280px;
   border: 10px solid red;
   overflow: hidden;
@@ -132,6 +143,7 @@ const butClick = (type: string, value: string | number) => {
   align-items: flex-start;
   position: absolute;
 }
+
 /* 
 :deep(.imgsBox) {
   animation: imgsBoxInner 5s linear;
