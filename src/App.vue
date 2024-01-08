@@ -3,12 +3,13 @@ import { onMounted, ref } from 'vue';
 import EmojiWaterfall from './components/EmojiWaterfall.vue'
 import Barrage from './components/Barrage.vue'
 import ScrollSeamless from './components/ScrollSeamless.vue'
+import ScrollErect from './components/ScrollErect.vue'
 
-type ComponentType = 'emoji' | 'barrage' | 'scroll'
+type ComponentType = 'emoji' | 'barrage' | 'scroll' | 'erect'
 
 const msg = ref<string[]>(['今天你EMO了吗'])
 
-const isComponent = ref<ComponentType>('scroll')
+const isComponent = ref<ComponentType>('erect')
 
 onMounted(() => {
   document.onkeydown = (event) => {
@@ -17,7 +18,7 @@ onMounted(() => {
       const title = prompt('输入你想要title吧？',)
       msg.value = (title ?? '').split(',')
     } else if (key === 'p') {
-      const componentArr: Array<ComponentType> = ['emoji','barrage', 'scroll']
+      const componentArr: Array<ComponentType> = ['emoji','barrage', 'scroll', 'erect']
       const index = componentArr.indexOf(isComponent.value)
       if(index === componentArr.length - 1) {
         isComponent.value = componentArr[0]
@@ -30,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <component :is="{ emoji: EmojiWaterfall, barrage: Barrage, scroll: ScrollSeamless }[isComponent]" :msg="msg" />
+  <component :is="{ emoji: EmojiWaterfall, barrage: Barrage, scroll: ScrollSeamless, erect: ScrollErect }[isComponent]" :msg="msg" />
 </template>
 
 <style scoped>

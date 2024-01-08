@@ -76,24 +76,31 @@ const addImg = () => {
 }
 
 const imgRun = () => {
+  // @ts-ignore
   clearInterval(options.timer)
   if (!options.imgsBox) return
   options.timer = setInterval(() => {
     //  获取当前left
+    // @ts-ignore
     let l = options.imgsBox.offsetLeft
     if (options.direction === 'right') l += options.speed
     else l -= options.speed
     // 判断是否到第一张或最后一张
+    // @ts-ignore
     if (l <= -(options.imgsBox.children.length - 1) * options.imgWidth) {
+      // @ts-ignore
       options.imgsBox.style.left = -options.imgWidth + 'px'
       return
     } else {
+      // @ts-ignore
       options.imgsBox.style.left = l + 'px'
     }
     if (l >= 0) {
+      // @ts-ignore
       options.imgsBox.style.left = -(options.imgsBox.children.length - 2) * options.imgWidth + 'px'
       return
     } else {
+      // @ts-ignore
       options.imgsBox.style.left = l + 'px'
     }
   }, 1)
@@ -106,6 +113,7 @@ const butClick = (type: string, value: string | number) => {
   } else if (type === 'speed') {
     options.speed = value as number
   } else if (type === 'stop') {
+    // @ts-ignore
     clearInterval(options.timer)
   }
 }
