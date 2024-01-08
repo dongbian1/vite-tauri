@@ -63,16 +63,29 @@ const onStart = () => {
     stopPosition.value[i] = getRandomInitInclusive(0, options.content[i].length - 1)
   }
   onRun()
-  setTimeout(() => {
+  // setTimeout(() => {
     onEnd(0)
-  }, 5000)
+  // }, 3000)
 }
 
 const onEnd = (index: number) => {
   stopInterval.value[index] = setInterval(() => {
     if (options.speed[index] === 1) return clearInterval(stopInterval.value[index])
+    // @ts-ignore
+    const top = parseInt(options.imgsBox[index].style.top)
+    if (options.speed[index] === 5) {
+      if ((Math.ceil(top / 100) * 100) === ((stopPosition.value[index])  * -200)) {
+        clearInterval(stopInterval.value[index])
+        stopInterval.value[index] = setInterval(() => {
+          options.speed[index] = options.speed[index] - 1
+          if (options.speed[index] === 1) return clearInterval(stopInterval.value[index])
+        }, 100)
+      } else {
+        options.speed[index] = 6
+      }
+    }
     options.speed[index] = options.speed[index] - 1
-  }, 500)
+  }, 200)
 }
 
 const addImg = () => {
@@ -105,7 +118,11 @@ const onRun = () => {
         if (height === stopTop) {
           // @ts-ignore
           clearInterval(options.timer[i])
-          onEnd(i + 1)
+          clearInterval(stopInterval.value[i])
+          // @ts-ignore
+          if (i < options.imgsBox.length - 1) {
+            onEnd(i + 1)
+          }
           if (i === 2) {
             const interval = setInterval(() => {
               burstColor()
