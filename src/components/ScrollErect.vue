@@ -85,7 +85,7 @@ const onEnd = (index: number) => {
       }
     }
     options.speed[index] = options.speed[index] - 1
-  }, 200)
+  }, 300)
 }
 
 const addImg = () => {
