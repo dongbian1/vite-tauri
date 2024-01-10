@@ -6,7 +6,7 @@
       </div>
     </div>
   </div>
-  <div>中奖: {{ options.content[0][stopPosition[0]] }}{{ options.content[1][stopPosition[1]] }}{{ options.content[2][stopPosition[2]] }}</div>
+  <!-- <div>中奖: {{ options.content[0][stopPosition[0]] }}{{ options.content[1][stopPosition[1]] }}{{ options.content[2][stopPosition[2]] }}</div> -->
   <button v-if="!isStart" class="btn" @click="onStart()">开 始</button>
 </template>
 
@@ -40,7 +40,7 @@ const options = reactive<OptionsProps>({
 
 const isStart = ref<boolean>(false)
 
-const stopPosition = ref<number[]>([0])
+const stopPosition = ref<number[]>([])
 const stopInterval = ref<NodeJS.Timer[]>([])
 
 onMounted(() => {
@@ -56,16 +56,16 @@ const onStart = () => {
   if (!options.imgsBox) return
   isStart.value = true
   options.speed = [20,20,20]
+  onRun()
   for (let i = 0; i < options.imgsBox.length; i++) {
     const top = getRandomInitInclusive(-(options.content[i].length - 1) * 100, -100)
     // @ts-ignore
     options.imgsBox[i].style.top = top + 'px'
     stopPosition.value[i] = getRandomInitInclusive(0, options.content[i].length - 1)
   }
-  onRun()
-  // setTimeout(() => {
+  setTimeout(() => {
     onEnd(0)
-  // }, 3000)
+  }, 3000)
 }
 
 const onEnd = (index: number) => {
@@ -74,7 +74,7 @@ const onEnd = (index: number) => {
     // @ts-ignore
     const top = parseInt(options.imgsBox[index].style.top)
     if (options.speed[index] === 5) {
-      if ((Math.ceil(top / 100) * 100) === ((stopPosition.value[index])  * -200)) {
+      if ((Math.ceil(top / 100) * 100) === ((stopPosition.value[index]) * -200)) {
         clearInterval(stopInterval.value[index])
         stopInterval.value[index] = setInterval(() => {
           options.speed[index] = options.speed[index] - 1
@@ -85,7 +85,7 @@ const onEnd = (index: number) => {
       }
     }
     options.speed[index] = options.speed[index] - 1
-  }, 300)
+  }, 200)
 }
 
 const addImg = () => {
